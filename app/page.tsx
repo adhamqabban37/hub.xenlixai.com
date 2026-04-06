@@ -19,6 +19,7 @@ import {
   Phone,
   Bot,
   X,
+  Check,
 } from "lucide-react";
 
 /* -- Fade-in on scroll ---------------------------------- */
@@ -1193,6 +1194,9 @@ function AIToolsSection() {
    ========================================================== */
 export default function Home() {
   const [expandedPlatform, setExpandedPlatform] = useState<number | null>(null);
+  const [formStatus, setFormStatus] = useState<"idle" | "sending" | "success">(
+    "idle",
+  );
   const [xBurst, setXBurst] = useState(false);
   const [burstPos, setBurstPos] = useState<{ x: number; y: number }>({
     x: 0,
@@ -1828,47 +1832,202 @@ export default function Home() {
 
                 <FadeIn delay={0.2}>
                   <div className="bg-white/[0.03] p-6 sm:p-10 md:p-14 rounded-[24px] md:rounded-[50px] border border-white/10 backdrop-blur-3xl shadow-black shadow-2xl">
-                    <form
-                      action="https://formspree.io/f/mkopkbbz"
-                      method="POST"
-                      className="space-y-8"
-                    >
-                      <div className="grid gap-8">
-                        <div className="relative group">
-                          <input
-                            type="text"
-                            name="name"
-                            placeholder="NAME"
-                            required
-                            className="w-full bg-transparent border-b border-white/10 py-5 focus:outline-none focus:border-cyan-500 transition-all font-black text-xs tracking-[0.3em] uppercase placeholder:text-gray-700"
-                          />
-                        </div>
-                        <div className="relative group">
-                          <input
-                            type="email"
-                            name="email"
-                            placeholder="EMAIL NODE"
-                            required
-                            className="w-full bg-transparent border-b border-white/10 py-5 focus:outline-none focus:border-cyan-500 transition-all font-black text-xs tracking-[0.3em] uppercase placeholder:text-gray-700"
-                          />
-                        </div>
-                      </div>
-                      <div className="relative group">
-                        <textarea
-                          name="message"
-                          placeholder="PROJECT SYNAPSE"
-                          rows={4}
-                          required
-                          className="w-full bg-transparent border-b border-white/10 py-5 focus:outline-none focus:border-cyan-500 transition-all font-black text-xs tracking-[0.3em] uppercase placeholder:text-gray-700 resize-none"
-                        />
-                      </div>
-                      <button
-                        type="submit"
-                        className="w-full py-6 bg-white text-black font-black text-sm tracking-[0.4em] uppercase rounded-3xl hover:bg-cyan-400 transition-all shadow-xl active:scale-[0.98] mt-6"
-                      >
-                        Initialize Contact
-                      </button>
-                    </form>
+                    <AnimatePresence mode="wait">
+                      {formStatus === "success" ? (
+                        <motion.div
+                          key="success"
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.8 }}
+                          transition={{ duration: 0.5, ease: "easeOut" }}
+                          className="flex flex-col items-center justify-center py-16 space-y-8"
+                        >
+                          {/* Animated check circle */}
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{
+                              delay: 0.2,
+                              type: "spring",
+                              stiffness: 200,
+                              damping: 12,
+                            }}
+                            className="relative"
+                          >
+                            <motion.div
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: [0, 0.6, 0] }}
+                              transition={{
+                                delay: 0.3,
+                                duration: 1.5,
+                                repeat: 2,
+                              }}
+                              className="absolute inset-0 w-28 h-28 rounded-full bg-cyan-400/30 blur-xl"
+                            />
+                            <motion.div
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: [0, 0.4, 0] }}
+                              transition={{
+                                delay: 0.5,
+                                duration: 2,
+                                repeat: 2,
+                              }}
+                              className="absolute -inset-4 w-36 h-36 rounded-full bg-cyan-500/20 blur-2xl"
+                            />
+                            <div className="w-28 h-28 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-2xl shadow-cyan-500/30 relative">
+                              <motion.div
+                                initial={{ pathLength: 0, opacity: 0 }}
+                                animate={{ pathLength: 1, opacity: 1 }}
+                                transition={{
+                                  delay: 0.5,
+                                  duration: 0.6,
+                                  ease: "easeOut",
+                                }}
+                              >
+                                <Check
+                                  size={48}
+                                  strokeWidth={3}
+                                  className="text-white"
+                                />
+                              </motion.div>
+                            </div>
+                          </motion.div>
+
+                          {/* Success text */}
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.6, duration: 0.5 }}
+                            className="text-center space-y-3"
+                          >
+                            <h3 className="text-2xl sm:text-3xl font-black tracking-tight italic uppercase">
+                              Transmission Received
+                            </h3>
+                            <p className="text-sm font-black tracking-[0.3em] text-gray-400 uppercase">
+                              Neural link established successfully
+                            </p>
+                          </motion.div>
+
+                          {/* Animated circuit lines */}
+                          <div className="flex gap-3">
+                            {[0, 1, 2, 3, 4].map((i) => (
+                              <motion.div
+                                key={i}
+                                initial={{ scaleX: 0 }}
+                                animate={{ scaleX: 1 }}
+                                transition={{
+                                  delay: 0.8 + i * 0.1,
+                                  duration: 0.4,
+                                }}
+                                className="w-8 h-[2px] bg-gradient-to-r from-cyan-400 to-transparent"
+                              />
+                            ))}
+                          </div>
+
+                          {/* Back to main button */}
+                          <motion.button
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 1.2, duration: 0.5 }}
+                            onClick={() => {
+                              setFormStatus("idle");
+                              window.scrollTo({ top: 0, behavior: "smooth" });
+                            }}
+                            className="px-10 py-4 bg-white/[0.05] border border-white/10 text-white font-black text-xs tracking-[0.4em] uppercase rounded-2xl hover:bg-white/10 hover:border-cyan-500/30 transition-all active:scale-[0.97]"
+                          >
+                            Return to Hub
+                          </motion.button>
+                        </motion.div>
+                      ) : (
+                        <motion.form
+                          key="form"
+                          initial={{ opacity: 1 }}
+                          exit={{
+                            opacity: 0,
+                            y: -20,
+                            transition: { duration: 0.3 },
+                          }}
+                          onSubmit={async (e) => {
+                            e.preventDefault();
+                            setFormStatus("sending");
+                            const form = e.currentTarget;
+                            try {
+                              const res = await fetch(
+                                "https://formspree.io/f/mkopkbbz",
+                                {
+                                  method: "POST",
+                                  body: new FormData(form),
+                                  headers: { Accept: "application/json" },
+                                },
+                              );
+                              if (res.ok) {
+                                setFormStatus("success");
+                              } else {
+                                setFormStatus("idle");
+                              }
+                            } catch {
+                              setFormStatus("idle");
+                            }
+                          }}
+                          className="space-y-8"
+                        >
+                          <div className="grid gap-8">
+                            <div className="relative group">
+                              <input
+                                type="text"
+                                name="name"
+                                placeholder="NAME"
+                                required
+                                disabled={formStatus === "sending"}
+                                className="w-full bg-transparent border-b border-white/10 py-5 focus:outline-none focus:border-cyan-500 transition-all font-black text-xs tracking-[0.3em] uppercase placeholder:text-gray-700 disabled:opacity-50"
+                              />
+                            </div>
+                            <div className="relative group">
+                              <input
+                                type="email"
+                                name="email"
+                                placeholder="EMAIL NODE"
+                                required
+                                disabled={formStatus === "sending"}
+                                className="w-full bg-transparent border-b border-white/10 py-5 focus:outline-none focus:border-cyan-500 transition-all font-black text-xs tracking-[0.3em] uppercase placeholder:text-gray-700 disabled:opacity-50"
+                              />
+                            </div>
+                          </div>
+                          <div className="relative group">
+                            <textarea
+                              name="message"
+                              placeholder="PROJECT SYNAPSE"
+                              rows={4}
+                              required
+                              disabled={formStatus === "sending"}
+                              className="w-full bg-transparent border-b border-white/10 py-5 focus:outline-none focus:border-cyan-500 transition-all font-black text-xs tracking-[0.3em] uppercase placeholder:text-gray-700 resize-none disabled:opacity-50"
+                            />
+                          </div>
+                          <button
+                            type="submit"
+                            disabled={formStatus === "sending"}
+                            className="w-full py-6 bg-white text-black font-black text-sm tracking-[0.4em] uppercase rounded-3xl hover:bg-cyan-400 transition-all shadow-xl active:scale-[0.98] mt-6 disabled:opacity-60 disabled:cursor-not-allowed relative overflow-hidden"
+                          >
+                            {formStatus === "sending" ? (
+                              <span className="flex items-center justify-center gap-3">
+                                <motion.span
+                                  animate={{ rotate: 360 }}
+                                  transition={{
+                                    duration: 1,
+                                    repeat: Infinity,
+                                    ease: "linear",
+                                  }}
+                                  className="inline-block w-5 h-5 border-2 border-black/30 border-t-black rounded-full"
+                                />
+                                Transmitting...
+                              </span>
+                            ) : (
+                              "Initialize Contact"
+                            )}
+                          </button>
+                        </motion.form>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </FadeIn>
               </div>
