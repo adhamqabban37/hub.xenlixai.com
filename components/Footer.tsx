@@ -36,23 +36,41 @@ export default function Footer() {
               System Nav
             </h6>
             <div className="flex flex-col gap-5 text-xs font-black text-gray-400 tracking-[0.2em] uppercase">
-              <Link href="#home" className="hover:text-white transition-colors">
+              <Link href="/" className="hover:text-white transition-colors">
                 01 / Home
               </Link>
               <Link
-                href="#platforms"
+                href="/platforms"
                 className="hover:text-white transition-colors"
               >
                 02 / Platforms
               </Link>
-              <Link href="#tech" className="hover:text-white transition-colors">
-                03 / Tech
-              </Link>
               <Link
-                href="#about"
+                href="/ai-tools"
                 className="hover:text-white transition-colors"
               >
-                04 / About
+                03 / AI Tools
+              </Link>
+              <Link href="/technology" className="hover:text-white transition-colors">
+                04 / Technology
+              </Link>
+              <Link
+                href="/about"
+                className="hover:text-white transition-colors"
+              >
+                05 / About
+              </Link>
+              <Link
+                href="/resources"
+                className="hover:text-white transition-colors"
+              >
+                06 / Resources
+              </Link>
+              <Link
+                href="/contact"
+                className="hover:text-white transition-colors"
+              >
+                07 / Contact
               </Link>
             </div>
           </div>

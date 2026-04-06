@@ -5,7 +5,15 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
-const navItems = ["Home", "Platforms", "AI Tools", "Tech", "About", "Contact"];
+const navItems = [
+  { label: "Home", href: "/" },
+  { label: "Platforms", href: "/platforms" },
+  { label: "AI Tools", href: "/ai-tools" },
+  { label: "Technology", href: "/technology" },
+  { label: "About", href: "/about" },
+  { label: "Resources", href: "/resources" },
+  { label: "Contact", href: "/contact" },
+];
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -57,11 +65,11 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-10 text-[11px] font-black tracking-[0.2em] text-gray-400 uppercase">
             {navItems.map((item) => (
               <Link
-                key={item}
-                href={`#${item.toLowerCase().replace(/\s+/g, "-")}`}
+                key={item.label}
+                href={item.href}
                 className="hover:text-white transition-all relative group"
               >
-                {item}
+                {item.label}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-500 to-orange-500 transition-all group-hover:w-full" />
               </Link>
             ))}
@@ -97,14 +105,14 @@ const Navbar = () => {
             <div className="flex flex-col items-center justify-center h-full gap-10 text-4xl font-black italic tracking-tighter">
               {navItems.map((item, idx) => (
                 <Link
-                  key={item}
-                  href={`#${item.toLowerCase().replace(/\s+/g, "-")}`}
+                  key={item.label}
+                  href={item.href}
                   onClick={() => setMobileOpen(false)}
                   className={`hover:text-cyan-400 transition-colors ${
                     idx % 2 === 0 ? "text-white" : "text-orange-400"
                   }`}
                 >
-                  {item}
+                  {item.label}
                 </Link>
               ))}
             </div>
