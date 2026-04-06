@@ -1192,7 +1192,6 @@ function AIToolsSection() {
    HOME PAGE
    ========================================================== */
 export default function Home() {
-  const formRef = useRef<HTMLFormElement>(null);
   const [expandedPlatform, setExpandedPlatform] = useState<number | null>(null);
   const [xBurst, setXBurst] = useState(false);
   const [burstPos, setBurstPos] = useState<{ x: number; y: number }>({
@@ -1830,27 +1829,9 @@ export default function Home() {
                 <FadeIn delay={0.2}>
                   <div className="bg-white/[0.03] p-6 sm:p-10 md:p-14 rounded-[24px] md:rounded-[50px] border border-white/10 backdrop-blur-3xl shadow-black shadow-2xl">
                     <form
-                      ref={formRef}
+                      action="https://formspree.io/f/mkopkbbz"
+                      method="POST"
                       className="space-y-8"
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        const form = formRef.current;
-                        if (!form) return;
-                        const name = (
-                          form.elements.namedItem("name") as HTMLInputElement
-                        )?.value;
-                        const email = (
-                          form.elements.namedItem("email") as HTMLInputElement
-                        )?.value;
-                        const message = (
-                          form.elements.namedItem(
-                            "message",
-                          ) as HTMLTextAreaElement
-                        )?.value;
-                        if (name && email && message) {
-                          window.location.href = `mailto:xenlixai@gmail.com?subject=Contact from ${encodeURIComponent(name)}&body=${encodeURIComponent(message)}%0A%0AFrom: ${encodeURIComponent(email)}`;
-                        }
-                      }}
                     >
                       <div className="grid gap-8">
                         <div className="relative group">
