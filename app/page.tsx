@@ -782,7 +782,9 @@ function AIToolsSection() {
 
                         {/* ===== VOICE AGENT DEMO (Tool 1) ===== */}
                         {activeTool === 1 && (
-                          <div className="max-w-2xl mx-auto">
+                          <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                            {/* Left — Live Call */}
+                            <div>
                             <div className="bg-black/40 rounded-[32px] border border-white/10 overflow-hidden">
                               {/* Call Header */}
                               <div className="px-8 py-5 border-b border-white/5 flex items-center justify-between">

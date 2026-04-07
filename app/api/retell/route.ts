@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import Retell from "retell-sdk";
 
+export async function GET() {
+  return NextResponse.json({ status: "ok", agent: "voice-agent-ready" });
+}
+
 export async function POST() {
   const apiKey = process.env.RETELL_API_KEY;
   if (!apiKey) {
