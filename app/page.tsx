@@ -328,24 +328,28 @@ function AIToolsSection() {
         setAgentTalking(false);
       });
 
-      client.on("update", (update: { transcript?: { role: string; content: string }[] }) => {
-        if (update.transcript) {
-          setCallTranscript(
-            update.transcript.map((t: { role: string; content: string }) => ({
-              speaker: t.role === "agent" ? ("agent" as const) : ("user" as const),
-              text: t.content,
-            })),
-          );
-          setTimeout(
-            () =>
-              transcriptRef.current?.scrollTo({
-                top: 9999,
-                behavior: "smooth",
-              }),
-            50,
-          );
-        }
-      });
+      client.on(
+        "update",
+        (update: { transcript?: { role: string; content: string }[] }) => {
+          if (update.transcript) {
+            setCallTranscript(
+              update.transcript.map((t: { role: string; content: string }) => ({
+                speaker:
+                  t.role === "agent" ? ("agent" as const) : ("user" as const),
+                text: t.content,
+              })),
+            );
+            setTimeout(
+              () =>
+                transcriptRef.current?.scrollTo({
+                  top: 9999,
+                  behavior: "smooth",
+                }),
+              50,
+            );
+          }
+        },
+      );
 
       client.on("error", (err: unknown) => {
         console.error("Retell error:", err);
@@ -803,7 +807,9 @@ function AIToolsSection() {
 
                               {/* Call Visual */}
                               <div className="p-8">
-                                {!callActive && !callConnecting && callTranscript.length === 0 ? (
+                                {!callActive &&
+                                !callConnecting &&
+                                callTranscript.length === 0 ? (
                                   <div className="flex flex-col items-center justify-center py-12">
                                     <div className="w-24 h-24 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(99,102,241,0.3)]">
                                       <Phone size={36} className="text-white" />
@@ -815,7 +821,8 @@ function AIToolsSection() {
                                       Powered by Retell AI
                                     </p>
                                     <p className="text-gray-700 text-[10px] mb-8 max-w-xs text-center">
-                                      Talk to our AI voice agent live. Microphone access required.
+                                      Talk to our AI voice agent live.
+                                      Microphone access required.
                                     </p>
                                     <button
                                       onClick={startCall}
@@ -883,7 +890,9 @@ function AIToolsSection() {
                                                 : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
                                             }`}
                                           >
-                                            {line.speaker === "agent" ? "AI" : "U"}
+                                            {line.speaker === "agent"
+                                              ? "AI"
+                                              : "U"}
                                           </div>
                                           <div>
                                             <p className="text-[9px] font-black tracking-[0.3em] uppercase text-gray-600 mb-1">
@@ -897,7 +906,7 @@ function AIToolsSection() {
                                           </div>
                                         </motion.div>
                                       ))}
-                                      {callActive &&
+                                      {callActive && (
                                         <motion.div
                                           animate={{ opacity: [0.3, 1, 0.3] }}
                                           transition={{
@@ -906,10 +915,14 @@ function AIToolsSection() {
                                           }}
                                           className="flex items-center gap-2 text-gray-600 text-xs italic"
                                         >
-                                          <div className={`w-1.5 h-1.5 rounded-full ${agentTalking ? "bg-indigo-400" : "bg-green-400"}`} />
-                                          {agentTalking ? "Agent speaking..." : "Listening..."}
+                                          <div
+                                            className={`w-1.5 h-1.5 rounded-full ${agentTalking ? "bg-indigo-400" : "bg-green-400"}`}
+                                          />
+                                          {agentTalking
+                                            ? "Agent speaking..."
+                                            : "Listening..."}
                                         </motion.div>
-                                      }
+                                      )}
                                     </div>
 
                                     {/* Call Controls */}
