@@ -241,13 +241,16 @@ function AIToolsSection() {
   >([]);
   const [demoInput, setDemoInput] = useState("");
   const demoRef = useRef<HTMLDivElement>(null);
-  // Voice demo state
+  // Voice demo state (Retell)
   const [callActive, setCallActive] = useState(false);
+  const [callConnecting, setCallConnecting] = useState(false);
   const [callSeconds, setCallSeconds] = useState(0);
   const [callTranscript, setCallTranscript] = useState<
-    { speaker: "ai" | "caller"; text: string }[]
+    { speaker: "agent" | "user"; text: string }[]
   >([]);
+  const [agentTalking, setAgentTalking] = useState(false);
   const callTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const retellClientRef = useRef<ReturnType<typeof Object> | null>(null);
   const transcriptRef = useRef<HTMLDivElement>(null);
   // Agent demo state
   const [agentRunning, setAgentRunning] = useState(false);
@@ -290,90 +293,81 @@ function AIToolsSection() {
     );
   };
 
-  // Voice call simulation
-  const voiceScript: {
-    speaker: "ai" | "caller";
-    text: string;
-    delay: number;
-  }[] = [
-    {
-      speaker: "ai",
-      text: "Thank you for calling XenlixAI. How can I assist you today?",
-      delay: 1500,
-    },
-    {
-      speaker: "caller",
-      text: "Hi, I'd like to know more about your AI voice solutions.",
-      delay: 3500,
-    },
-    {
-      speaker: "ai",
-      text: "Of course! Our voice agents can handle inbound and outbound calls, schedule appointments, and qualify leads -- all with natural-sounding speech.",
-      delay: 3000,
-    },
-    {
-      speaker: "caller",
-      text: "Can it integrate with our existing phone system?",
-      delay: 3000,
-    },
-    {
-      speaker: "ai",
-      text: "Absolutely. We support SIP trunking, Twilio, and most VoIP platforms. Setup takes less than 24 hours.",
-      delay: 3500,
-    },
-    {
-      speaker: "caller",
-      text: "What about handling multiple languages?",
-      delay: 2500,
-    },
-    {
-      speaker: "ai",
-      text: "Our voice engine supports 30+ languages with real-time translation. Callers can speak naturally in their preferred language.",
-      delay: 3500,
-    },
-    {
-      speaker: "caller",
-      text: "That's impressive. Can I schedule a demo?",
-      delay: 2500,
-    },
-    {
-      speaker: "ai",
-      text: "I'd be happy to help. I'm transferring you to our solutions team now. You'll receive a confirmation shortly. Thank you for choosing XenlixAI!",
-      delay: 4000,
-    },
-  ];
-
-  const startCall = () => {
-    setCallActive(true);
-    setCallSeconds(0);
+  // Retell voice call
+  const startCall = async () => {
+    setCallConnecting(true);
     setCallTranscript([]);
-    callTimerRef.current = setInterval(
-      () => setCallSeconds((s) => s + 1),
-      1000,
-    );
-    let accumulated = 0;
-    voiceScript.forEach((line, i) => {
-      accumulated += line.delay;
-      setTimeout(() => {
-        setCallTranscript((prev) => [
-          ...prev,
-          { speaker: line.speaker, text: line.text },
-        ]);
-        setTimeout(
-          () =>
-            transcriptRef.current?.scrollTo({ top: 9999, behavior: "smooth" }),
-          50,
+    setCallSeconds(0);
+    try {
+      const res = await fetch("/api/retell", { method: "POST" });
+      if (!res.ok) throw new Error("Failed to create call");
+      const { access_token } = await res.json();
+
+      const { RetellWebClient } = await import("retell-client-js-sdk");
+      const client = new RetellWebClient();
+      retellClientRef.current = client;
+
+      client.on("call_started", () => {
+        setCallConnecting(false);
+        setCallActive(true);
+        callTimerRef.current = setInterval(
+          () => setCallSeconds((s) => s + 1),
+          1000,
         );
-        if (i === voiceScript.length - 1) {
-          setTimeout(() => endCall(), 3000);
+      });
+
+      client.on("call_ended", () => {
+        endCall();
+      });
+
+      client.on("agent_start_talking", () => {
+        setAgentTalking(true);
+      });
+
+      client.on("agent_stop_talking", () => {
+        setAgentTalking(false);
+      });
+
+      client.on("update", (update: { transcript?: { role: string; content: string }[] }) => {
+        if (update.transcript) {
+          setCallTranscript(
+            update.transcript.map((t: { role: string; content: string }) => ({
+              speaker: t.role === "agent" ? ("agent" as const) : ("user" as const),
+              text: t.content,
+            })),
+          );
+          setTimeout(
+            () =>
+              transcriptRef.current?.scrollTo({
+                top: 9999,
+                behavior: "smooth",
+              }),
+            50,
+          );
         }
-      }, accumulated);
-    });
+      });
+
+      client.on("error", (err: unknown) => {
+        console.error("Retell error:", err);
+        endCall();
+      });
+
+      await client.startCall({ accessToken: access_token });
+    } catch (err) {
+      console.error("Failed to start Retell call:", err);
+      setCallConnecting(false);
+    }
   };
 
   const endCall = () => {
     setCallActive(false);
+    setCallConnecting(false);
+    setAgentTalking(false);
     if (callTimerRef.current) clearInterval(callTimerRef.current);
+    if (retellClientRef.current) {
+      (retellClientRef.current as { stopCall: () => void }).stopCall();
+      retellClientRef.current = null;
+    }
   };
 
   const formatTime = (s: number) =>
@@ -790,12 +784,14 @@ function AIToolsSection() {
                               <div className="px-8 py-5 border-b border-white/5 flex items-center justify-between">
                                 <div className="flex items-center gap-4">
                                   <div
-                                    className={`w-3 h-3 rounded-full ${callActive ? "bg-green-400 animate-pulse shadow-[0_0_10px_rgba(74,222,128,0.6)]" : "bg-gray-600"}`}
+                                    className={`w-3 h-3 rounded-full ${callActive ? "bg-green-400 animate-pulse shadow-[0_0_10px_rgba(74,222,128,0.6)]" : callConnecting ? "bg-yellow-400 animate-pulse" : "bg-gray-600"}`}
                                   />
                                   <span className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-400">
                                     {callActive
-                                      ? "Call In Progress"
-                                      : "Voice Agent Ready"}
+                                      ? "Live Call In Progress"
+                                      : callConnecting
+                                        ? "Connecting..."
+                                        : "Voice Agent Ready"}
                                   </span>
                                 </div>
                                 {callActive && (
@@ -807,7 +803,7 @@ function AIToolsSection() {
 
                               {/* Call Visual */}
                               <div className="p-8">
-                                {!callActive && callTranscript.length === 0 ? (
+                                {!callActive && !callConnecting && callTranscript.length === 0 ? (
                                   <div className="flex flex-col items-center justify-center py-12">
                                     <div className="w-24 h-24 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(99,102,241,0.3)]">
                                       <Phone size={36} className="text-white" />
@@ -815,8 +811,11 @@ function AIToolsSection() {
                                     <p className="text-gray-400 text-sm italic mb-2">
                                       XenlixAI Voice Agent
                                     </p>
-                                    <p className="text-gray-600 text-xs mb-8">
-                                      +1 (800) XENLIX-AI
+                                    <p className="text-gray-600 text-xs mb-2">
+                                      Powered by Retell AI
+                                    </p>
+                                    <p className="text-gray-700 text-[10px] mb-8 max-w-xs text-center">
+                                      Talk to our AI voice agent live. Microphone access required.
                                     </p>
                                     <button
                                       onClick={startCall}
@@ -825,6 +824,15 @@ function AIToolsSection() {
                                       <Phone size={16} />
                                       Start Live Call
                                     </button>
+                                  </div>
+                                ) : callConnecting && !callActive ? (
+                                  <div className="flex flex-col items-center justify-center py-16">
+                                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-yellow-500 to-orange-600 flex items-center justify-center mb-6 animate-pulse">
+                                      <Phone size={36} className="text-white" />
+                                    </div>
+                                    <p className="text-gray-400 text-sm italic">
+                                      Connecting to voice agent...
+                                    </p>
                                   </div>
                                 ) : (
                                   <>
@@ -870,18 +878,18 @@ function AIToolsSection() {
                                         >
                                           <div
                                             className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-black ${
-                                              line.speaker === "ai"
+                                              line.speaker === "agent"
                                                 ? "bg-indigo-500/20 text-indigo-400 border border-indigo-500/30"
                                                 : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
                                             }`}
                                           >
-                                            {line.speaker === "ai" ? "AI" : "C"}
+                                            {line.speaker === "agent" ? "AI" : "U"}
                                           </div>
                                           <div>
                                             <p className="text-[9px] font-black tracking-[0.3em] uppercase text-gray-600 mb-1">
-                                              {line.speaker === "ai"
+                                              {line.speaker === "agent"
                                                 ? "Voice Agent"
-                                                : "Caller"}
+                                                : "You"}
                                             </p>
                                             <p className="text-sm text-gray-300 leading-relaxed">
                                               {line.text}
@@ -889,7 +897,7 @@ function AIToolsSection() {
                                           </div>
                                         </motion.div>
                                       ))}
-                                      {callActive && (
+                                      {callActive &&
                                         <motion.div
                                           animate={{ opacity: [0.3, 1, 0.3] }}
                                           transition={{
@@ -898,10 +906,10 @@ function AIToolsSection() {
                                           }}
                                           className="flex items-center gap-2 text-gray-600 text-xs italic"
                                         >
-                                          <div className="w-1.5 h-1.5 rounded-full bg-green-400" />
-                                          Listening...
+                                          <div className={`w-1.5 h-1.5 rounded-full ${agentTalking ? "bg-indigo-400" : "bg-green-400"}`} />
+                                          {agentTalking ? "Agent speaking..." : "Listening..."}
                                         </motion.div>
-                                      )}
+                                      }
                                     </div>
 
                                     {/* Call Controls */}
@@ -932,8 +940,7 @@ function AIToolsSection() {
                               </div>
                             </div>
                             <p className="text-center text-[10px] tracking-[0.3em] text-gray-600 mt-4 uppercase font-black">
-                              Simulated Voice Call -- Not Connected to Live
-                              Telephony
+                              Live AI Voice Agent — Powered by Retell AI
                             </p>
                           </div>
                         )}
