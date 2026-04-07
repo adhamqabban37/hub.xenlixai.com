@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Cpu, Zap, Database, Globe, ArrowRight, Shield, Layers } from "lucide-react";
+import {
+  Cpu,
+  Zap,
+  Database,
+  Globe,
+  ArrowRight,
+  Shield,
+  Layers,
+} from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Technology — AI Architecture, Machine Learning & Neural Systems",
@@ -126,9 +134,9 @@ export default function TechnologyPage() {
         </h1>
         <p className="max-w-3xl mx-auto text-center text-gray-400 text-lg leading-relaxed font-medium">
           XenlixAI is built on a foundation of advanced artificial intelligence,
-          scalable infrastructure, and modular architecture. Our technology stack
-          powers every platform, tool, and service in the ecosystem — designed
-          for performance, reliability, and continuous evolution.
+          scalable infrastructure, and modular architecture. Our technology
+          stack powers every platform, tool, and service in the ecosystem —
+          designed for performance, reliability, and continuous evolution.
         </p>
       </section>
 

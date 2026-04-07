@@ -55,8 +55,7 @@ export default function ContactPage() {
               {/* Contact Info */}
               <div>
                 <h2 className="text-3xl sm:text-5xl font-black mb-6 italic tracking-tighter uppercase leading-none">
-                  Connect with{" "}
-                  <span className="text-cyan-400">XenlixAI</span>
+                  Connect with <span className="text-cyan-400">XenlixAI</span>
                 </h2>
                 <p className="text-gray-400 text-lg mb-12 font-medium">
                   Whether you have questions about our platforms, need AI
@@ -203,9 +202,7 @@ export default function ContactPage() {
                       disabled={formStatus === "sending"}
                       className="w-full py-5 bg-white text-black font-black text-sm tracking-[0.3em] uppercase rounded-2xl hover:bg-cyan-400 transition-all active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                      {formStatus === "sending"
-                        ? "Sending..."
-                        : "Send Message"}
+                      {formStatus === "sending" ? "Sending..." : "Send Message"}
                     </button>
                   </form>
                 )}

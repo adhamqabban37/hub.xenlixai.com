@@ -51,7 +51,10 @@ export default function Footer() {
               >
                 03 / AI Tools
               </Link>
-              <Link href="/technology" className="hover:text-white transition-colors">
+              <Link
+                href="/technology"
+                className="hover:text-white transition-colors"
+              >
                 04 / Technology
               </Link>
               <Link

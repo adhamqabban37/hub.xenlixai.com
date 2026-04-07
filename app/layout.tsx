@@ -13,8 +13,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default:
-      "XenlixAI — Intelligent AI Platforms and Automation Tools",
+    default: "XenlixAI — Intelligent AI Platforms and Automation Tools",
     template: "%s | XenlixAI",
   },
   description:
