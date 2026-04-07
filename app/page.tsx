@@ -1260,46 +1260,7 @@ export default function Home() {
         return;
       }
 
-      // Detect if the user clicked on an X or x character in any text
-      let charAtClick: string | null = null;
-      if (typeof document.caretRangeFromPoint === "function") {
-        const range = document.caretRangeFromPoint(e.clientX, e.clientY);
-        if (range) {
-          const text = range.startContainer.textContent;
-          const offset = range.startOffset;
-          if (text && offset < text.length) {
-            charAtClick = text[offset];
-          }
-        }
-      } else if (
-        typeof (
-          document as unknown as {
-            caretPositionFromPoint: (
-              x: number,
-              y: number,
-            ) => { offsetNode: Node; offset: number } | null;
-          }
-        ).caretPositionFromPoint === "function"
-      ) {
-        const pos = (
-          document as unknown as {
-            caretPositionFromPoint: (
-              x: number,
-              y: number,
-            ) => { offsetNode: Node; offset: number } | null;
-          }
-        ).caretPositionFromPoint(e.clientX, e.clientY);
-        if (pos) {
-          const text = pos.offsetNode.textContent;
-          const offset = pos.offset;
-          if (text && offset < text.length) {
-            charAtClick = text[offset];
-          }
-        }
-      }
-      if (charAtClick === "X" || charAtClick === "x") {
-        triggerXBurst(e.clientX, e.clientY);
-      }
+      // Only trigger on elements with data-x-burst, not every X character
     };
     document.addEventListener("click", handler);
     return () => document.removeEventListener("click", handler);
