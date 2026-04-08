@@ -785,178 +785,185 @@ function AIToolsSection() {
                           <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
                             {/* Left — Live Call */}
                             <div>
-                            <div className="bg-black/40 rounded-[32px] border border-white/10 overflow-hidden">
-                              {/* Call Header */}
-                              <div className="px-8 py-5 border-b border-white/5 flex items-center justify-between">
-                                <div className="flex items-center gap-4">
-                                  <div
-                                    className={`w-3 h-3 rounded-full ${callActive ? "bg-green-400 animate-pulse shadow-[0_0_10px_rgba(74,222,128,0.6)]" : callConnecting ? "bg-yellow-400 animate-pulse" : "bg-gray-600"}`}
-                                  />
-                                  <span className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-400">
-                                    {callActive
-                                      ? "Live Call In Progress"
-                                      : callConnecting
-                                        ? "Connecting..."
-                                        : "Voice Agent Ready"}
-                                  </span>
+                              <div className="bg-black/40 rounded-[32px] border border-white/10 overflow-hidden">
+                                {/* Call Header */}
+                                <div className="px-8 py-5 border-b border-white/5 flex items-center justify-between">
+                                  <div className="flex items-center gap-4">
+                                    <div
+                                      className={`w-3 h-3 rounded-full ${callActive ? "bg-green-400 animate-pulse shadow-[0_0_10px_rgba(74,222,128,0.6)]" : callConnecting ? "bg-yellow-400 animate-pulse" : "bg-gray-600"}`}
+                                    />
+                                    <span className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-400">
+                                      {callActive
+                                        ? "Live Call In Progress"
+                                        : callConnecting
+                                          ? "Connecting..."
+                                          : "Voice Agent Ready"}
+                                    </span>
+                                  </div>
+                                  {callActive && (
+                                    <span className="text-[10px] font-black tracking-[0.2em] text-green-400 tabular-nums">
+                                      {formatTime(callSeconds)}
+                                    </span>
+                                  )}
                                 </div>
-                                {callActive && (
-                                  <span className="text-[10px] font-black tracking-[0.2em] text-green-400 tabular-nums">
-                                    {formatTime(callSeconds)}
-                                  </span>
-                                )}
-                              </div>
 
-                              {/* Call Visual */}
-                              <div className="p-8">
-                                {!callActive &&
-                                !callConnecting &&
-                                callTranscript.length === 0 ? (
-                                  <div className="flex flex-col items-center justify-center py-12">
-                                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(99,102,241,0.3)]">
-                                      <Phone size={36} className="text-white" />
+                                {/* Call Visual */}
+                                <div className="p-8">
+                                  {!callActive &&
+                                  !callConnecting &&
+                                  callTranscript.length === 0 ? (
+                                    <div className="flex flex-col items-center justify-center py-12">
+                                      <div className="w-24 h-24 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(99,102,241,0.3)]">
+                                        <Phone
+                                          size={36}
+                                          className="text-white"
+                                        />
+                                      </div>
+                                      <p className="text-gray-400 text-sm italic mb-2">
+                                        XenlixAI Voice Agent
+                                      </p>
+                                      <p className="text-gray-600 text-xs mb-2">
+                                        Powered by Retell AI
+                                      </p>
+                                      <p className="text-gray-700 text-[10px] mb-8 max-w-xs text-center">
+                                        Talk to our AI voice agent live.
+                                        Microphone access required.
+                                      </p>
+                                      <button
+                                        onClick={startCall}
+                                        className="px-10 py-4 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl text-[10px] font-black tracking-[0.3em] uppercase text-white hover:scale-105 active:scale-95 transition-all shadow-[0_10px_30px_-10px_rgba(34,197,94,0.5)] cursor-pointer flex items-center gap-3"
+                                      >
+                                        <Phone size={16} />
+                                        Start Live Call
+                                      </button>
                                     </div>
-                                    <p className="text-gray-400 text-sm italic mb-2">
-                                      XenlixAI Voice Agent
-                                    </p>
-                                    <p className="text-gray-600 text-xs mb-2">
-                                      Powered by Retell AI
-                                    </p>
-                                    <p className="text-gray-700 text-[10px] mb-8 max-w-xs text-center">
-                                      Talk to our AI voice agent live.
-                                      Microphone access required.
-                                    </p>
-                                    <button
-                                      onClick={startCall}
-                                      className="px-10 py-4 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl text-[10px] font-black tracking-[0.3em] uppercase text-white hover:scale-105 active:scale-95 transition-all shadow-[0_10px_30px_-10px_rgba(34,197,94,0.5)] cursor-pointer flex items-center gap-3"
-                                    >
-                                      <Phone size={16} />
-                                      Start Live Call
-                                    </button>
-                                  </div>
-                                ) : callConnecting && !callActive ? (
-                                  <div className="flex flex-col items-center justify-center py-16">
-                                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-yellow-500 to-orange-600 flex items-center justify-center mb-6 animate-pulse">
-                                      <Phone size={36} className="text-white" />
+                                  ) : callConnecting && !callActive ? (
+                                    <div className="flex flex-col items-center justify-center py-16">
+                                      <div className="w-24 h-24 rounded-full bg-gradient-to-br from-yellow-500 to-orange-600 flex items-center justify-center mb-6 animate-pulse">
+                                        <Phone
+                                          size={36}
+                                          className="text-white"
+                                        />
+                                      </div>
+                                      <p className="text-gray-400 text-sm italic">
+                                        Connecting to voice agent...
+                                      </p>
                                     </div>
-                                    <p className="text-gray-400 text-sm italic">
-                                      Connecting to voice agent...
-                                    </p>
-                                  </div>
-                                ) : (
-                                  <>
-                                    {/* Waveform Visualization */}
-                                    {callActive && (
-                                      <div className="flex items-center justify-center gap-[3px] h-16 mb-6">
-                                        {Array.from({ length: 40 }).map(
-                                          (_, i) => (
-                                            <motion.div
-                                              key={i}
-                                              className="w-[3px] bg-gradient-to-t from-indigo-500 to-purple-400 rounded-full"
-                                              animate={{
-                                                height: [
-                                                  8,
-                                                  20 + Math.random() * 30,
-                                                  8,
-                                                ],
-                                              }}
-                                              transition={{
-                                                duration:
-                                                  0.4 + Math.random() * 0.6,
-                                                repeat: Infinity,
-                                                repeatType: "reverse",
-                                                delay: i * 0.03,
-                                              }}
+                                  ) : (
+                                    <>
+                                      {/* Waveform Visualization */}
+                                      {callActive && (
+                                        <div className="flex items-center justify-center gap-[3px] h-16 mb-6">
+                                          {Array.from({ length: 40 }).map(
+                                            (_, i) => (
+                                              <motion.div
+                                                key={i}
+                                                className="w-[3px] bg-gradient-to-t from-indigo-500 to-purple-400 rounded-full"
+                                                animate={{
+                                                  height: [
+                                                    8,
+                                                    20 + Math.random() * 30,
+                                                    8,
+                                                  ],
+                                                }}
+                                                transition={{
+                                                  duration:
+                                                    0.4 + Math.random() * 0.6,
+                                                  repeat: Infinity,
+                                                  repeatType: "reverse",
+                                                  delay: i * 0.03,
+                                                }}
+                                              />
+                                            ),
+                                          )}
+                                        </div>
+                                      )}
+
+                                      {/* Live Transcript */}
+                                      <div
+                                        ref={transcriptRef}
+                                        className="h-64 overflow-y-auto space-y-4 scrollbar-thin"
+                                      >
+                                        {callTranscript.map((line, i) => (
+                                          <motion.div
+                                            key={i}
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            className="flex gap-4"
+                                          >
+                                            <div
+                                              className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-black ${
+                                                line.speaker === "agent"
+                                                  ? "bg-indigo-500/20 text-indigo-400 border border-indigo-500/30"
+                                                  : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
+                                              }`}
+                                            >
+                                              {line.speaker === "agent"
+                                                ? "AI"
+                                                : "U"}
+                                            </div>
+                                            <div>
+                                              <p className="text-[9px] font-black tracking-[0.3em] uppercase text-gray-600 mb-1">
+                                                {line.speaker === "agent"
+                                                  ? "Voice Agent"
+                                                  : "You"}
+                                              </p>
+                                              <p className="text-sm text-gray-300 leading-relaxed">
+                                                {line.text}
+                                              </p>
+                                            </div>
+                                          </motion.div>
+                                        ))}
+                                        {callActive && (
+                                          <motion.div
+                                            animate={{ opacity: [0.3, 1, 0.3] }}
+                                            transition={{
+                                              duration: 1.5,
+                                              repeat: Infinity,
+                                            }}
+                                            className="flex items-center gap-2 text-gray-600 text-xs italic"
+                                          >
+                                            <div
+                                              className={`w-1.5 h-1.5 rounded-full ${agentTalking ? "bg-indigo-400" : "bg-green-400"}`}
                                             />
-                                          ),
+                                            {agentTalking
+                                              ? "Agent speaking..."
+                                              : "Listening..."}
+                                          </motion.div>
                                         )}
                                       </div>
-                                    )}
 
-                                    {/* Live Transcript */}
-                                    <div
-                                      ref={transcriptRef}
-                                      className="h-64 overflow-y-auto space-y-4 scrollbar-thin"
-                                    >
-                                      {callTranscript.map((line, i) => (
-                                        <motion.div
-                                          key={i}
-                                          initial={{ opacity: 0, y: 10 }}
-                                          animate={{ opacity: 1, y: 0 }}
-                                          className="flex gap-4"
-                                        >
-                                          <div
-                                            className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-black ${
-                                              line.speaker === "agent"
-                                                ? "bg-indigo-500/20 text-indigo-400 border border-indigo-500/30"
-                                                : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
-                                            }`}
+                                      {/* Call Controls */}
+                                      <div className="flex items-center justify-center gap-4 mt-6 pt-6 border-t border-white/5">
+                                        {callActive ? (
+                                          <button
+                                            onClick={endCall}
+                                            className="px-8 py-3 bg-gradient-to-r from-red-500 to-rose-600 rounded-xl text-[10px] font-black tracking-[0.2em] uppercase text-white hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center gap-2"
                                           >
-                                            {line.speaker === "agent"
-                                              ? "AI"
-                                              : "U"}
-                                          </div>
-                                          <div>
-                                            <p className="text-[9px] font-black tracking-[0.3em] uppercase text-gray-600 mb-1">
-                                              {line.speaker === "agent"
-                                                ? "Voice Agent"
-                                                : "You"}
-                                            </p>
-                                            <p className="text-sm text-gray-300 leading-relaxed">
-                                              {line.text}
-                                            </p>
-                                          </div>
-                                        </motion.div>
-                                      ))}
-                                      {callActive && (
-                                        <motion.div
-                                          animate={{ opacity: [0.3, 1, 0.3] }}
-                                          transition={{
-                                            duration: 1.5,
-                                            repeat: Infinity,
-                                          }}
-                                          className="flex items-center gap-2 text-gray-600 text-xs italic"
-                                        >
-                                          <div
-                                            className={`w-1.5 h-1.5 rounded-full ${agentTalking ? "bg-indigo-400" : "bg-green-400"}`}
-                                          />
-                                          {agentTalking
-                                            ? "Agent speaking..."
-                                            : "Listening..."}
-                                        </motion.div>
-                                      )}
-                                    </div>
-
-                                    {/* Call Controls */}
-                                    <div className="flex items-center justify-center gap-4 mt-6 pt-6 border-t border-white/5">
-                                      {callActive ? (
-                                        <button
-                                          onClick={endCall}
-                                          className="px-8 py-3 bg-gradient-to-r from-red-500 to-rose-600 rounded-xl text-[10px] font-black tracking-[0.2em] uppercase text-white hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center gap-2"
-                                        >
-                                          <Phone
-                                            size={14}
-                                            className="rotate-[135deg]"
-                                          />
-                                          End Call
-                                        </button>
-                                      ) : (
-                                        <button
-                                          onClick={startCall}
-                                          className="px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl text-[10px] font-black tracking-[0.2em] uppercase text-white hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center gap-2"
-                                        >
-                                          <Phone size={14} />
-                                          Call Again
-                                        </button>
-                                      )}
-                                    </div>
-                                  </>
-                                )}
+                                            <Phone
+                                              size={14}
+                                              className="rotate-[135deg]"
+                                            />
+                                            End Call
+                                          </button>
+                                        ) : (
+                                          <button
+                                            onClick={startCall}
+                                            className="px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl text-[10px] font-black tracking-[0.2em] uppercase text-white hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center gap-2"
+                                          >
+                                            <Phone size={14} />
+                                            Call Again
+                                          </button>
+                                        )}
+                                      </div>
+                                    </>
+                                  )}
+                                </div>
                               </div>
+                              <p className="text-center text-[10px] tracking-[0.3em] text-gray-600 mt-4 uppercase font-black">
+                                Live AI Voice Agent — Powered by Retell AI
+                              </p>
                             </div>
-                            <p className="text-center text-[10px] tracking-[0.3em] text-gray-600 mt-4 uppercase font-black">
-                              Live AI Voice Agent — Powered by Retell AI
-                            </p>
                           </div>
                         )}
 
