@@ -964,6 +964,61 @@ function AIToolsSection() {
                                 Live AI Voice Agent — Powered by Retell AI
                               </p>
                             </div>
+
+                            {/* Right — How It Works */}
+                            <div className="space-y-6">
+                              <div className="bg-black/40 rounded-[32px] border border-white/10 p-8">
+                                <h4 className="text-[10px] font-black tracking-[0.4em] uppercase text-indigo-400 mb-4">
+                                  How This AI Voice Agent Works
+                                </h4>
+                                <p className="text-gray-400 text-sm leading-relaxed mb-6">
+                                  This is a live AI voice assistant demonstrating how businesses can automate customer phone interactions 24/7 — no human staff needed.
+                                </p>
+
+                                <div className="space-y-3 mb-6">
+                                  <p className="text-[9px] font-black tracking-[0.3em] uppercase text-gray-500">
+                                    Capabilities
+                                  </p>
+                                  {[
+                                    "Answer common business questions",
+                                    "Book appointments",
+                                    "Collect customer information",
+                                    "Provide hours & services",
+                                    "Qualify potential leads",
+                                    "Route calls or take messages",
+                                  ].map((cap, i) => (
+                                    <div
+                                      key={i}
+                                      className="flex items-center gap-3 text-sm text-gray-300"
+                                    >
+                                      <Check size={14} className="text-indigo-400 shrink-0" />
+                                      <span>{cap}</span>
+                                    </div>
+                                  ))}
+                                </div>
+
+                                <div className="space-y-3">
+                                  <p className="text-[9px] font-black tracking-[0.3em] uppercase text-gray-500">
+                                    Try Asking
+                                  </p>
+                                  {[
+                                    "I'd like to book an appointment",
+                                    "What services do you offer?",
+                                    "What are your business hours?",
+                                    "Can I leave a message?",
+                                    "How much does it cost?",
+                                  ].map((scenario, i) => (
+                                    <div
+                                      key={i}
+                                      className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/5 text-sm text-gray-400"
+                                    >
+                                      <span className="text-indigo-400 text-xs font-black">{i + 1}</span>
+                                      <span>&ldquo;{scenario}&rdquo;</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         )}
 
