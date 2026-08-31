@@ -1854,7 +1854,7 @@ export default function Home() {
                             Official Support
                           </p>
                           <p className="text-lg sm:text-2xl font-black tracking-tight italic">
-                            support@xenlixai.com
+                            info@xenlixai.com
                           </p>
                         </div>
                       </a>

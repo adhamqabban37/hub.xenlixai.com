@@ -65,7 +65,7 @@ export default function ContactPage() {
 
                 <div className="space-y-8">
                   <a
-                    href="mailto:support@xenlixai.com"
+                    href="mailto:info@xenlixai.com"
                     className="flex items-center gap-6 group"
                   >
                     <div className="w-14 h-14 bg-white/[0.03] rounded-2xl flex items-center justify-center text-cyan-400 border border-white/10 group-hover:border-cyan-500/30 transition-colors">
@@ -76,7 +76,7 @@ export default function ContactPage() {
                         Support
                       </p>
                       <p className="text-lg font-bold tracking-tight">
-                        support@xenlixai.com
+                        info@xenlixai.com
                       </p>
                     </div>
                   </a>

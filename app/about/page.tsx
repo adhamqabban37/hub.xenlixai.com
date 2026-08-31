@@ -238,10 +238,10 @@ export default function AboutPage() {
                 Contact
               </span>
               <a
-                href="mailto:support@xenlixai.com"
+                href="mailto:info@xenlixai.com"
                 className="text-cyan-400 hover:underline"
               >
-                support@xenlixai.com
+                info@xenlixai.com
               </a>
             </div>
           </div>

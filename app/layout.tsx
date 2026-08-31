@@ -90,7 +90,7 @@ const organizationSchema = {
   sameAs: ["https://www.xenlixai.com", "https://agency.xenlixai.com"],
   contactPoint: {
     "@type": "ContactPoint",
-    email: "support@xenlixai.com",
+    email: "info@xenlixai.com",
     contactType: "customer support",
   },
 };
