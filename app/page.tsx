@@ -21,6 +21,7 @@ import {
   X,
   Check,
 } from "lucide-react";
+import WhatsNewSection from "./whatsnew-section";
 
 /* -- Fade-in on scroll ---------------------------------- */
 const FadeIn = ({
@@ -1728,6 +1729,8 @@ export default function Home() {
       {/* ===================================================
           AI TOOLS FOR BUSINESS
           =================================================== */}
+      <WhatsNewSection />
+
       <AIToolsSection />
 
       {/* ===================================================
