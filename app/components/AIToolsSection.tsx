@@ -1,3 +1,111 @@
+"use client";
+import { motion, AnimatePresence } from "framer-motion";
+import { useRef, useState } from "react";
+import { Activity, ArrowRight, Bot, Check, ChevronDown, Cpu, MessageSquare, Phone, X } from "lucide-react";
+
+
+/* -- Fade-in on scroll ---------------------------------- */
+const FadeIn = ({
+  children,
+  delay = 0,
+  className = "",
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}) => (
+  <motion.div
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-60px" }}
+    transition={{ duration: 0.7, delay, ease: [0.25, 0.4, 0.25, 1] }}
+    className={className}
+  >
+    {children}
+  </motion.div>
+);
+
+/* -- Data ----------------------------------------------- */
+
+
+/* -- AI Tools Data -------------------------------------- */
+const aiTools = [
+  {
+    name: "AI Customer Chatbots",
+    short:
+      "Intelligent conversational assistants designed to handle customer interactions, answer questions, and automate support.",
+    icon: <MessageSquare size={26} />,
+    color: "from-cyan-400 to-blue-600",
+    overview:
+      "AI chatbots simulate human-like conversations to assist users in real time. These systems can answer common questions, guide users through services, and reduce the workload on human support teams.",
+    steps: [
+      { label: "User Message", desc: "User sends a message" },
+      {
+        label: "NLP Engine",
+        desc: "AI interprets the request using natural language processing",
+      },
+      {
+        label: "Knowledge Retrieval",
+        desc: "System retrieves knowledge or generates a response",
+      },
+      {
+        label: "Response",
+        desc: "User receives an accurate, contextual reply",
+      },
+    ],
+    useCases: [
+      "Customer support automation",
+      "Lead qualification",
+      "Website engagement",
+      "Knowledge base assistance",
+    ],
+  },
+  {
+    name: "AI Voice Agents",
+    short:
+      "Conversational AI systems capable of handling phone calls, responding to customers, and performing automated voice interactions.",
+    icon: <Phone size={26} />,
+    color: "from-indigo-500 to-purple-600",
+    overview:
+      "AI voice agents enable businesses to automate phone conversations while maintaining natural and engaging interactions with callers.",
+    steps: [
+      { label: "Incoming Call", desc: "Call received by the system" },
+      { label: "Speech Recognition", desc: "AI processes spoken language" },
+      { label: "Context Engine", desc: "AI generates contextual responses" },
+      { label: "Voice Synthesis", desc: "Natural voice delivers the response" },
+    ],
+    useCases: [
+      "Appointment scheduling",
+      "Customer service calls",
+      "Sales call automation",
+      "Information hotlines",
+    ],
+  },
+  {
+    name: "Autonomous AI Agents",
+    short:
+      "Advanced AI agents capable of performing complex tasks, analyzing information, and assisting with workflows.",
+    icon: <Bot size={26} />,
+    color: "from-orange-500 to-red-600",
+    overview:
+      "Autonomous AI agents act as intelligent assistants capable of reasoning through tasks, analyzing data, and executing multi-step processes.",
+    steps: [
+      { label: "Task Input", desc: "User provides a task or objective" },
+      { label: "Analysis", desc: "AI agent analyzes requirements" },
+      { label: "Data Gathering", desc: "System gathers relevant data" },
+      { label: "Execution", desc: "AI completes or assists with the task" },
+    ],
+    useCases: [
+      "Research automation",
+      "Workflow assistance",
+      "Report generation",
+      "Business data analysis",
+    ],
+  },
+];
+
+/* -- AI Tools Section Component ------------------------- */
+
 function AIToolsSection() {
   const [activeTool, setActiveTool] = useState<number | null>(null);
   const [simTab, setSimTab] = useState<"workflow" | "demo">("workflow");
@@ -1041,3 +1149,5 @@ function AIToolsSection() {
         </FadeIn>
       </div>
     </section>
+  );
+}
