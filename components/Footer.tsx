@@ -123,13 +123,13 @@ export default function Footer() {
               Compliance
             </h6>
             <div className="flex flex-col gap-5 text-xs font-black text-gray-400 tracking-[0.2em] uppercase">
-              <Link href="https://hub.xenlixai.com/security" className="hover:text-white transition-colors">
+              <Link href="/security" className="hover:text-white transition-colors">
                 Security Protocol
               </Link>
-              <Link href="https://hub.xenlixai.com/terms" className="hover:text-white transition-colors">
+              <Link href="/terms" className="hover:text-white transition-colors">
                 Terms of Node
               </Link>
-              <Link href="https://hub.xenlixai.com/privacy" className="hover:text-white transition-colors">
+              <Link href="/privacy" className="hover:text-white transition-colors">
                 Privacy Neural
               </Link>
             </div>
