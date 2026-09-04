@@ -58,22 +58,28 @@ export default function Footer() {
                 04 / Technology
               </Link>
               <Link
+                href="/consulting"
+                className="hover:text-white transition-colors"
+              >
+                05 / Consulting
+              </Link>
+              <Link
                 href="/about"
                 className="hover:text-white transition-colors"
               >
-                05 / About
+                06 / About
               </Link>
               <Link
                 href="/resources"
                 className="hover:text-white transition-colors"
               >
-                06 / Resources
+                07 / Resources
               </Link>
               <Link
                 href="/contact"
                 className="hover:text-white transition-colors"
               >
-                07 / Contact
+                08 / Contact
               </Link>
             </div>
           </div>

@@ -10,6 +10,7 @@ const navItems = [
   { label: "Platforms", href: "/platforms" },
   { label: "AI Tools", href: "/ai-tools" },
   { label: "Technology", href: "/technology" },
+  { label: "Consulting", href: "/consulting" },
   { label: "About", href: "/about" },
   { label: "Resources", href: "/resources" },
   { label: "Contact", href: "/contact" },
